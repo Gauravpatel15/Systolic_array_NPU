@@ -30,40 +30,7 @@ The `manual_src` folder contains the later, complete simulation prototype built 
 
 The final compact wrapper synthesized for `xc7z020clg400-1` using 64 DSP48E1 blocks, about 3,052 LUTs, 4,774 registers, 79 I/O buffers, and met the 100 MHz timing constraint with +4.265 ns worst slack. This remains an educational prototype: it does not yet provide an AXI/DDR software interface or a complete Transformer/LLM runtime.
 
-## Run in the Vivado Tcl Console
 
-Save/close any unrelated open project first. Paste:
-
-```tcl
-cd {C:/Users/HP/OneDrive/Documents/ChatGPT/SYSTOLIC ARRAY HARDWARE ACCELERATor}
-source scripts/create_project.tcl
-source scripts/simulate_pe.tcl
-```
-
-Require `PASS tb_mac_pe:` and no fatal errors. Then:
-
-```tcl
-source scripts/simulate_array.tcl
-```
-
-Require `PASS N=2:`, `PASS N=4:`, `PASS N=8:` and `PASS tb_systolic_array:`. XSim returning control alone is not proof that a test passed.
-
-For an automated PowerShell run:
-
-```powershell
-.\scripts\run_tests.ps1
-```
-
-To use a different Vivado location, pass `-VivadoBin 'D:\Vivado\Vivado\2024.2\bin'`. To regenerate input files, run `python software/generate_vectors.py` with an available Python 3 installation. Python is not needed to use the committed vectors.
-
-The GUI simulation helper clears the Windows read-only attribute on directories inside this project's generated `build/vivado` tree. This addresses an error observed after OneDrive marked generated directories read-only; it does not change filesystem access-control permissions.
-
-## Learning order
-
-1. Clocked registers and signed INT8 arithmetic.
-2. One PE: multiply, accumulate, forward, and stall.
-3. 2 x 2 array and cycle-by-cycle skewing.
-4. 4 x 4 / 8 x 8 arrays, padding, and tiled matrix multiplication.
 5. Synthesizable tile controller and explicit `start/busy/done` protocol.
 6. Banked synchronous memories and latency-aware scheduling.
 7. AXI control/streaming verification, then board integration.
